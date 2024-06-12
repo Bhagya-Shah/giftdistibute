@@ -13,11 +13,9 @@ st.title("ID Lookup")
 # Ask for ID
 id_input = st.number_input("Enter ID:", min_value=1, max_value=df['ID'].max())
 
-# Search button
 if st.button('Search'):
     # Find data associated with the ID
     result = df[df['ID'] == id_input]
-    
     # Display result
     if not result.empty:
         result = result.applymap(lambda x: x.upper() if isinstance(x, str) else x)  # Convert strings to uppercase
@@ -27,3 +25,18 @@ if st.button('Search'):
             st.write("")  # Add empty line between rows
     else:
         st.write("ID not found.")
+
+# Search by Name
+name_input = st.text_input("Enter Name (partial match):")
+
+# Search button for Name
+if st.button('Search by Name'):
+    # Find data containing the given name
+    result_name = df[df['Name'].str.contains(name_input, case=False)]
+    
+    # Display result for Name
+    if not result_name.empty:
+        st.write("Results based on Name (partial match):")
+        st.table(result_name)
+    else:
+        st.write("No matching records found for the given name.")
